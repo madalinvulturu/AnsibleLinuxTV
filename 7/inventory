@@ -1,0 +1,11 @@
+[ubuntu_hosts]
+172.16.56.11
+172.16.56.12
+172.16.56.13
+[centos_hosts]
+172.16.56.15 ansible_become_password='Wmadvul1!'
+[linux_tv:children]
+ubuntu_hosts
+centos_hosts
+[linux_tv:vars]
+ansible_python_interpreter=/usr/bin/python3
