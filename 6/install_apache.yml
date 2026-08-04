@@ -1,16 +1,62 @@
 ---
-
 - hosts: all
   become: true
   tasks:
-    - name: Update repository index
+
+    # ---------- Ubuntu Tasks ----------
+    - name: Update repository index (Ubuntu)
       apt:
         update_cache: yes
-    - name: Install apache2 package
+      when: ansible_facts['distribution'] == "Ubuntu"
+
+    - name: Install apache2 package (Ubuntu)
       apt:
         name: apache2
         state: latest
-    - name: add PHP support for Apache
+      when: ansible_facts['distribution'] == "Ubuntu"
+
+    - name: Add PHP support for Apache (Ubuntu)
       apt:
         name: libapache2-mod-php
         state: latest
+      when: ansible_facts['distribution'] == "Ubuntu"
+
+    - name: Ensure Apache is running and enabled (Ubuntu)
+      service:
+        name: apache2
+        state: started
+        enabled: yes
+      when: ansible_facts['distribution'] == "Ubuntu"
+
+    # ---------- CentOS Tasks ----------
+    - name: Update repository index (CentOS)
+      dnf:
+        update_cache: yes
+      when: ansible_facts['distribution'] == "CentOS"
+
+    - name: Install httpd package (CentOS)
+      dnf:
+        name: httpd
+        state: latest
+      when: ansible_facts['distribution'] == "CentOS"
+
+    - name: Add PHP support for Apache (CentOS)
+      dnf:
+        name: php
+        state: latest
+      when: ansible_facts['distribution'] == "CentOS"
+
+    - name: Ensure httpd is running and enabled (CentOS)
+      service:
+        name: httpd
+        state: started
+        enabled: yes
+      when: ansible_facts['distribution'] == "CentOS"
+
+    - name: Open HTTP port in firewalld (CentOS)
+      firewalld:
+        service: http
+        permanent: yes
+        state: enabled
+        immediate: yes
+      when: ansible_facts['distribution'] == "CentOS"
