@@ -1,0 +1,7 @@
+[linux_tv]
+172.16.56.11
+172.16.56.12
+172.16.56.13
+
+[linux_tv:vars]
+ansible_python_interpreter=/usr/bin/python3
